@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +34,14 @@ public class FoodController {
     @GetMapping("/one/{id}")
     public Optional<Food> getOne(@PathVariable("id") UUID id) {
         Optional<Food> food = repository.findById(id);
+        return food;
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PostMapping("/save")
+    public Food save(@RequestBody Food data) {
+        Food food = new Food(data);
+        repository.save(food);
         return food;
     }
 }

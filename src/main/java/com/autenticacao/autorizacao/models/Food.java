@@ -34,4 +34,10 @@ public class Food {
     private String title;
     private String image;
     private Integer price;
+
+    public Food(Food data) {
+        this.image = data.getImage();
+        this.price = data.getPrice();
+        this.title = data.getImage();
+    }
 }
