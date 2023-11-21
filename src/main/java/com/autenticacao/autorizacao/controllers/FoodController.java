@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,6 +64,17 @@ public class FoodController {
             }
             repository.save(food);
         }
+        return findFood;
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @DeleteMapping("/delete/{id}")
+    public Optional<Food> delete(@PathVariable("id") UUID id) {
+        Optional<Food> findFood = repository.findById(id);
+        if (findFood.isPresent()) {
+            repository.deleteById(id);
+        }
+
         return findFood;
     }
 }
