@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,5 +44,25 @@ public class FoodController {
         Food food = new Food(data);
         repository.save(food);
         return food;
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PatchMapping("/update/{id}")
+    public Optional<Food> update(@PathVariable("id") UUID id, @RequestBody Food data) {
+        Optional<Food> findFood = repository.findById(id);
+        if (findFood.isPresent()) {
+            Food food = findFood.get();
+            if (data.getTitle() != null) {
+                food.setTitle(data.getTitle());
+            }
+            if (data.getImage() != null) {
+                food.setImage(data.getImage());
+            }
+            if (data.getPrice() != null) {
+                food.setPrice(data.getPrice());
+            }
+            repository.save(food);
+        }
+        return findFood;
     }
 }
