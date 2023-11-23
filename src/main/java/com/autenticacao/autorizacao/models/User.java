@@ -40,4 +40,9 @@ public class User {
         this.email = data.getEmail();
         this.password = data.getPassword();
     }
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

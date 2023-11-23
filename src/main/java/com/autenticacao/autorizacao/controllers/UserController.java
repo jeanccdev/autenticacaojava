@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,8 @@ public class UserController {
     @Autowired
     private UserRepository repository;
 
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/all")
     public List<User> getAll() {
@@ -43,6 +46,7 @@ public class UserController {
     @PostMapping("/save")
     public User save(@RequestBody User data) {
         User user = new User(data);
+        user.setPassword(passwordEncoder.encode(data.getPassword()));
         repository.save(user);
         return user;
     }
@@ -60,7 +64,7 @@ public class UserController {
                 user.setEmail(data.getEmail());
             }
             if (data.getPassword() != null) {
-                user.setPassword(data.getPassword());
+                user.setPassword(passwordEncoder.encode(data.getPassword()));
             }
             repository.save(user);
         }
