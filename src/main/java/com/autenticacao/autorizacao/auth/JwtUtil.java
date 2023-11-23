@@ -1,7 +1,6 @@
 package com.autenticacao.autorizacao.auth;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,6 @@ import jakarta.servlet.http.HttpServletRequest;
 @Component
 public class JwtUtil {
     private final String secret_key = "mysecretkey";
-    private long accessTokenValidity = 3;
 
     private final JwtParser jwtParser;
 
@@ -32,8 +30,6 @@ public class JwtUtil {
     public String createToken(User user) {
         Claims claims = Jwts.claims().setSubject(user.getEmail());
         claims.put("name", user.getName());
-        Date tokenCreateTime = new Date();
-        Date tokenValidity = new Date(tokenCreateTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));
         return Jwts.builder()
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS256, secret_key)
